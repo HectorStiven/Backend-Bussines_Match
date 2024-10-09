@@ -13,17 +13,19 @@ from django.contrib.auth.hashers import check_password,make_password
 
 
 from django.contrib.auth.hashers import make_password
+from rest_framework.permissions import AllowAny
 
 class CrearUsuario(generics.CreateAPIView):
     queryset = Usuario.objects.all()
     serializer_class = UsuarioSerializer
-    permission_classes = [IsAuthenticated]  # Asegúrate de que se requiera autenticación
+    permission_classes = [AllowAny]  # Permitir a cualquier usuario crear una cuenta
 
     def perform_create(self, serializer):
-        # Al crear el usuario, asegúrate de hashear la contraseña
+        # Verifica si el serializer se encarga de hashear la contraseña
         contrasena = serializer.validated_data.get('contrasena')
-        hashed_password = make_password(contrasena)
-        serializer.save(contrasena=hashed_password)  # Guardar la contraseña hasheada
+        if contrasena:
+            serializer.validated_data['contrasena'] = make_password(contrasena)  # Hashearla si no se maneja automáticamente
+        serializer.save()
 
     def post(self, request, *args, **kwargs):
         serializer = UsuarioSerializer(data=request.data)
@@ -40,6 +42,33 @@ class CrearUsuario(generics.CreateAPIView):
                 'detail': 'Error al crear el usuario',
                 'data': serializer.errors
             }, status=status.HTTP_400_BAD_REQUEST)
+
+# class CrearUsuario(generics.CreateAPIView):
+#     queryset = Usuario.objects.all()
+#     serializer_class = UsuarioSerializer
+#     permission_classes = [IsAuthenticated]  # Asegúrate de que se requiera autenticación
+
+#     def perform_create(self, serializer):
+#         # Al crear el usuario, asegúrate de hashear la contraseña
+#         contrasena = serializer.validated_data.get('contrasena')
+#         hashed_password = make_password(contrasena)
+#         serializer.save(contrasena=hashed_password)  # Guardar la contraseña hasheada
+
+#     def post(self, request, *args, **kwargs):
+#         serializer = UsuarioSerializer(data=request.data)
+#         if serializer.is_valid():
+#             self.perform_create(serializer)  # Llama al método para guardar el usuario
+#             return Response({
+#                 'success': True,
+#                 'detail': 'Usuario creado exitosamente',
+#                 'data': serializer.data
+#             }, status=status.HTTP_201_CREATED)
+#         else:
+#             return Response({
+#                 'success': False,
+#                 'detail': 'Error al crear el usuario',
+#                 'data': serializer.errors
+#             }, status=status.HTTP_400_BAD_REQUEST)
         
 
 
@@ -161,7 +190,7 @@ class LoginUsuario(generics.GenericAPIView):
                 'success': True,
                 'detail': 'Login exitoso.',
                 'access_token': str(access_token),
-                'refresh_token': str(refresh)
+                # 'refresh_token': str(refresh)
             }, status=status.HTTP_200_OK)
         else:
             return Response({

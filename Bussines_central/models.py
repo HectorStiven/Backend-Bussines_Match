@@ -1,6 +1,5 @@
 from django.db import models
 
-
 class Usuario(models.Model):
     id = models.BigAutoField(primary_key=True)  # Identificador único del usuario
     nombre = models.CharField(max_length=255)  # Nombre del usuario
@@ -9,7 +8,7 @@ class Usuario(models.Model):
     contrasena = models.CharField(max_length=255)  # Contraseña del usuario
     genero = models.CharField(max_length=50)  # Género del usuario
     estado = models.CharField(max_length=50)  # Estado del usuario
-    foto_perfil = models.URLField(max_length=255,blank=True, null=True  )  # URL de la foto de perfil del usuario
+    foto_perfil = models.URLField(max_length=255, blank=True, null=True)  # URL de la foto de perfil del usuario
     direccion = models.CharField(max_length=255)  # Dirección del usuario
     fecha_nacimiento = models.DateField()  # Fecha de nacimiento del usuario
     numero_identificacion = models.CharField(max_length=50, unique=True)  # Número de identificación del usuario
@@ -41,16 +40,44 @@ class Subcategoria(models.Model):
         verbose_name_plural = 'Subcategorías'
         db_table = 'T003Subcategoria'  # Nombre de la tabla en la base de datos
 
+class TipoEmpresa(models.Model):
+    id = models.BigAutoField(primary_key=True)  # Identificador único del tipo de empresa
+    nombre = models.CharField(max_length=255, unique=True)  # Nombre del tipo de empresa
+    descripcion = models.TextField(max_length=500)  # Descripción del tipo de empresa
+
+    class Meta:
+        verbose_name = 'Tipo Empresa'
+        verbose_name_plural = 'Tipos Empresa'
+        db_table = 'T006TipoEmpresa'  # Nombre de la tabla en la base de datos
+
+class Empresa(models.Model):
+    id = models.BigAutoField(primary_key=True)  # Identificador único de la empresa
+    foto_perfil = models.URLField(max_length=255, blank=True, null=True)  # URL de la foto de perfil de la empresa
+    nombre = models.CharField(max_length=255)  # Nombre de la empresa
+    direccion = models.CharField(max_length=255)  # Dirección de la empresa
+    telefono = models.CharField(max_length=50)  # Teléfono de contacto de la empresa
+    correo_electronico = models.EmailField(max_length=255, unique=True)  # Correo electrónico de la empresa
+    fecha_registro = models.DateField()  # Fecha de registro de la empresa
+    numero_identificacion = models.CharField(max_length=50, unique=True)  # Número de identificación de la empresa
+    tipo_empresa = models.ForeignKey(TipoEmpresa, on_delete=models.CASCADE)  # Tipo de empresa
+    paginawed = models.URLField(max_length=255, blank=True, null=True)  # URL de la página web de la empresa
+    contacto = models.CharField(max_length=255)  # Nombre del contacto principal de la empresa
+
+    class Meta:
+        verbose_name = 'Empresa'
+        verbose_name_plural = 'Empresas'
+        db_table = 'T007Empresa'  # Nombre de la tabla en la base de datos
+
 class Match(models.Model):
-    
     id = models.BigAutoField(primary_key=True)  # Identificador único del match
     usuario = models.ForeignKey(Usuario, related_name='matches', on_delete=models.CASCADE)  # Usuario asociado al match
-    usuario_2 = models.ForeignKey(Usuario, related_name='matches_usuario_2', on_delete=models.CASCADE)  # Segundo usuario asociado al match
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)  # Empresa asociada al match
     fecha_match = models.DateTimeField()  # Fecha del match
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)  # Categoría asociada al match
     etapa = models.CharField(max_length=50)  # Etapa del match
     asunto = models.CharField(max_length=255)  # Asunto del match
     descripcion = models.TextField(max_length=500)  # Descripción del match
+    postulados = models.JSONField(blank=True, null=True)  # Datos adicionales en formato JSON
 
     class Meta:
         verbose_name = 'Match'
@@ -67,5 +94,3 @@ class Interes(models.Model):
         verbose_name = 'Interés'
         verbose_name_plural = 'Intereses'
         db_table = 'T005Interes'  # Nombre de la tabla en la base de datos
-
-
