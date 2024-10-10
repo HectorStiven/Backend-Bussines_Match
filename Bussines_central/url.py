@@ -11,7 +11,7 @@ urlpatterns = [
 
     path('LoginUsuario/', login.LoginUsuario.as_view(), name='listar_categoria'),
 
-   path('listar_categoria/', viwes.ListarCategoria.as_view(), name='listar_categoria'),
+    path('listar_categoria/', viwes.ListarCategoria.as_view(), name='listar_categoria'),
     path('crear_categoria/', viwes.CrearCategoria.as_view(), name='crear_categoria'),
     path('actualizar_categoria/<int:pk>/', viwes.ActualizarCategoria.as_view(), name='actualizar_categoria'),
     path('eliminar_categoria/<int:pk>/', viwes.EliminarCategoria.as_view(), name='eliminar_categoria'),

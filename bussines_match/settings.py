@@ -46,6 +46,9 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
 }
 
 
@@ -54,8 +57,8 @@ from datetime import timedelta
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta( minutes=2),  # El token expira en 60 minutos
     'REFRESH_TOKEN_LIFETIME': timedelta(minutes=3),  # El token de refresco dura 1 día
-    # 'ROTATE_REFRESH_TOKENS': True,  # Rota el token de refresco
-    # 'BLACKLIST_AFTER_ROTATION': True,  # Revoca el token anterior después de usar uno nuevo
+    'ROTATE_REFRESH_TOKENS': True,  # Rota el token de refresco
+    'BLACKLIST_AFTER_ROTATION': True,  # Revoca el token anterior después de usar uno nuevo
 }
 
 
@@ -67,6 +70,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'bussines_match.urls'
@@ -151,3 +155,10 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+
+CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ALLOWED_ORIGIN = ['*']
