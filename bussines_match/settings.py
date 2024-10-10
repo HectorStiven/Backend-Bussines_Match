@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-hx5o1y@=aut$@!_f0f!-oh*wi*bhzpkv$z7=#e4&xh9cf$@o^p
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -41,24 +41,31 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
 ]
+# SWAGGER_SETTINGS = {
+#     'SECURITY_DEFINITIONS': {
+#         'Bearer': {
+#             'type': 'apiKey',
+#             'name': 'Authorization',
+#             'in': 'header'
+#         }
+#     }
+# }
+
+# Bussines_central/exception_handler.py
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    ),
+    )
+    
 }
-
 
 from datetime import timedelta
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta( minutes=2),  # El token expira en 60 minutos
     'REFRESH_TOKEN_LIFETIME': timedelta(minutes=3),  # El token de refresco dura 1 día
-    'ROTATE_REFRESH_TOKENS': True,  # Rota el token de refresco
-    'BLACKLIST_AFTER_ROTATION': True,  # Revoca el token anterior después de usar uno nuevo
+
 }
 
 
@@ -162,3 +169,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ALLOWED_ORIGIN = ['*']
+
+
+AUTH_USER_MODEL = 'Bussines_central.Usuario'  # Reemplaza 'app_name' con el nombre de tu aplicación

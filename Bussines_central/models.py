@@ -18,32 +18,77 @@ class Empresa(models.Model):
         db_table = 'T007Empresa'  # Nombre de la tabla en la base de datos
 
 
-# Modelo Usuario
-class Usuario(models.Model):
-    id = models.BigAutoField(primary_key=True)  # Identificador único del usuario
-    nombre = models.CharField(max_length=255)  # Nombre del usuario
-    apellido = models.CharField(max_length=255)  # Apellido del usuario
-    correo_electronico = models.EmailField(max_length=255, unique=True)  # Correo electrónico
-    contrasena = models.CharField(max_length=255)  # Contraseña del usuario
-    genero = models.CharField(max_length=50, null=True, blank=True)  # Género (opcional)
-    foto_perfil = models.URLField(max_length=255, null=True, blank=True)  # Foto de perfil
-    direccion = models.CharField(max_length=255)  # Dirección del usuario
-    telefono = models.CharField(max_length=50, null=True, blank=True)  # Teléfono (opcional)
-    pais = models.CharField(max_length=100, null=True, blank=True)  # País (opcional)
-    ciudad = models.CharField(max_length=100, null=True, blank=True)  # Ciudad (opcional)
-    fecha_nacimiento = models.DateField()  # Fecha de nacimiento
-    numero_identificacion = models.CharField(max_length=50, unique=True)  # Número de identificación
-    es_empresa = models.BooleanField(default=False)  # Indica si es una empresa
-    empresa = models.ForeignKey(Empresa, null=True, blank=True, on_delete=models.SET_NULL)  # Relación con Empresa
-    ultima_conexion = models.DateTimeField(null=True, blank=True)  # Última conexión
-    fecha_creacion = models.DateTimeField(auto_now_add=True)  # Fecha de creación
-    activo = models.BooleanField(default=True)  # Estado activo/inactivo
-    notificaciones = models.BooleanField(default=True)  # Recibir notificaciones
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+
+
+
+# class UsuarioManager(BaseUserManager):
+#     def create_user(self, correo_electronico, contrasena=None, **extra_fields):
+#         if not correo_electronico:
+#             raise ValueError('El usuario debe tener un correo electrónico')
+
+#         correo_electronico = self.normalize_email(correo_electronico)
+#         user = self.model(correo_electronico=correo_electronico, **extra_fields)
+        
+#         # Guardar la contraseña en tu campo `contrasena` sin usar el método `set_password`
+#         if contrasena:
+#             user.contrasena = contrasena
+
+#         user.save(using=self._db)
+#         return user
+
+#     def create_superuser(self, correo_electronico, contrasena=None, **extra_fields):
+#         extra_fields.setdefault('is_staff', True)
+#         extra_fields.setdefault('is_superuser', True)
+#         return self.create_user(correo_electronico, contrasena, **extra_fields)
+    
+
+class Usuario(AbstractBaseUser, PermissionsMixin):
+    id = models.BigAutoField(primary_key=True)
+    nombre = models.CharField(max_length=255)
+    apellido = models.CharField(max_length=255)
+    correo_electronico = models.EmailField(max_length=255, unique=True)
+    contrasena = models.CharField(max_length=255)
+    genero = models.CharField(max_length=50, null=True, blank=True)
+    foto_perfil = models.URLField(max_length=255, null=True, blank=True)
+    direccion = models.CharField(max_length=255)
+    telefono = models.CharField(max_length=50, null=True, blank=True)
+    pais = models.CharField(max_length=100, null=True, blank=True)
+    ciudad = models.CharField(max_length=100, null=True, blank=True)
+    fecha_nacimiento = models.DateField()
+    numero_identificacion = models.CharField(max_length=50, unique=True)
+    es_empresa = models.BooleanField(default=False)
+    ultima_conexion = models.DateTimeField(null=True, blank=True)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    activo = models.BooleanField(default=True)
+    notificaciones = models.BooleanField(default=True)
+
+    # Avoid field clash by specifying related_name
+    # groups = models.ManyToManyField(
+    #     Group,
+    #     related_name='usuario_set',
+    #     blank=True,
+    #     help_text='The groups this user belongs to.',
+    #     verbose_name='groups',
+    # )
+    # user_permissions = models.ManyToManyField(
+    #     Permission,
+    #     related_name='usuario_set',
+    #     blank=True,
+    #     help_text='Specific permissions for this user.',
+    #     verbose_name='user permissions',
+    # )
+
+    # objects = UsuarioManager()
+
+    USERNAME_FIELD = 'correo_electronico'
+    REQUIRED_FIELDS = ['nombre', 'apellido']
 
     class Meta:
         verbose_name = 'Usuario'
         verbose_name_plural = 'Usuarios'
         db_table = 'T001Usuario'
+
 
 # Modelo Subcategoria
 class Subcategoria(models.Model):
