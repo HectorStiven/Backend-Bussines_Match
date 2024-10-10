@@ -110,17 +110,31 @@ WSGI_APPLICATION = 'bussines_match.wsgi.application'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'bussines_match',         # Nombre de la base de datos
+#         'USER': 'postgres',               # Usuario de PostgreSQL
+#         'PASSWORD': '0606',               # Contraseña del usuario
+#         'HOST': 'localhost',              # Host donde está corriendo la base de datos
+#         'PORT': '5432',                   # Puerto de conexión (5432 es el predeterminado)
+#     }
+# }
+
+from dotenv import load_dotenv
+
+load_dotenv() 
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'bussines_match',         # Nombre de la base de datos
-        'USER': 'postgres',               # Usuario de PostgreSQL
-        'PASSWORD': '0606',               # Contraseña del usuario
-        'HOST': 'localhost',              # Host donde está corriendo la base de datos
-        'PORT': '5432',                   # Puerto de conexión (5432 es el predeterminado)
+        'NAME': os.getenv('BUSSINES_MATCH_DB_NAME'),
+        'USER': os.getenv('BUSSINES_MATCH_DB_USER'),
+        'PASSWORD': os.getenv('BUSSINES_MATCH_DB_PASSWORD'),
+        'HOST': os.getenv('BUSSINES_MATCH_DB_HOST'),
+        'PORT': os.getenv('BUSSINES_MATCH_DB_PORT'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
