@@ -28,6 +28,6 @@ urlpatterns = [
 
 #hola
 
-    path('subir_archivo/', viwes.SubirDocumentos.as_view(), name='listar_producto'),
+    path('subir_archivo/', viwes.SubirDocumentos.as_view(), name='subir_producto'),
     path('listar_archivo/', viwes.ListarDocumentos.as_view(), name='listar_producto'),
 ]
