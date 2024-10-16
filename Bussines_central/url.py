@@ -16,7 +16,7 @@ urlpatterns = [
     path('actualizar_categoria/<int:pk>/', viwes.ActualizarCategoria.as_view(), name='actualizar_categoria'),
     path('eliminar_categoria/<int:pk>/', viwes.EliminarCategoria.as_view(), name='eliminar_categoria'),
 
-   path('listar_subcategoria/', viwes.ListarSubcategoria.as_view(), name='listar_subcategoria'),
+    path('listar_subcategoria/', viwes.ListarSubcategoria.as_view(), name='listar_subcategoria'),
     path('crear_subcategoria/', viwes.CrearSubcategoria.as_view(), name='crear_subcategoria'),
     path('actualizar_subcategoria/<int:pk>/', viwes.ActualizarSubcategoria.as_view(), name='actualizar_subcategoria'),
     path('eliminar_subcategoria/<int:pk>/', viwes.EliminarSubcategoria.as_view(), name='eliminar_subcategoria'),
@@ -27,5 +27,6 @@ urlpatterns = [
     path('eliminar_match/<int:pk>/', viwes.EliminarMatch.as_view(), name='eliminar_match'),
 
 
-
+    path('subir_archivo/', viwes.SubirDocumentos.as_view(), name='listar_producto'),
+    path('listar_archivo/', viwes.ListarDocumentos.as_view(), name='listar_producto'),
 ]

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Usuario, Categoria, Subcategoria, Match, Interes
+from .models import Documento, Usuario, Categoria, Subcategoria, Match, Interes
 
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
@@ -49,3 +49,14 @@ class InteresSerializer(serializers.ModelSerializer):
     class Meta:
         model = Interes
         fields = '__all__'
+
+class DocumentoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Documento
+        fields = '__all__'
+    
+    def validate_archivo(self, value):
+        # Verifica si el archivo es un PDF
+        if not value.name.endswith('.pdf'):
+            raise serializers.ValidationError("Solo se permiten archivos PDF.")
+        return value

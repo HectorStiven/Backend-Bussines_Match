@@ -1,6 +1,6 @@
 from rest_framework import generics
-from .models import Usuario, Categoria, Subcategoria, Match, Interes    
-from .serializer import UsuarioSerializer, CategoriaSerializer, SubcategoriaSerializer, MatchSerializer, InteresSerializer
+from .models import Documento, Usuario, Categoria, Subcategoria, Match, Interes    
+from .serializer import DocumentoSerializer, UsuarioSerializer, CategoriaSerializer, SubcategoriaSerializer, MatchSerializer, InteresSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.exceptions import NotFound,ValidationError,PermissionDenied
@@ -284,3 +284,37 @@ class EliminarInteres(generics.DestroyAPIView):
             'data': []
         }, status=status.HTTP_204_NO_CONTENT)
     
+
+class SubirDocumentos(generics.CreateAPIView):
+    queryset = Documento.objects.all()
+    serializer_class = DocumentoSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = DocumentoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({
+                'success': True,
+                'detail': 'Documento subido exitosamente',
+                'data': serializer.data
+            }, status=status.HTTP_201_CREATED)
+        else:
+            return Response({
+                'success': False,
+                'detail': 'Error al subir el documento',
+                'data': serializer.errors
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        
+class ListarDocumentos(generics.ListAPIView):
+    queryset = Documento.objects.all()
+    serializer_class = DocumentoSerializer
+
+    def get(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        serializer = self.get_serializer(queryset, many=True)
+        return Response({
+            'success': True,
+            'detail': 'Lista de documentos registrados',
+            'data': serializer.data
+        }, status=status.HTTP_200_OK)

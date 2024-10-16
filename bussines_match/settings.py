@@ -186,3 +186,8 @@ CORS_ALLOWED_ORIGIN = ['*']
 
 
 AUTH_USER_MODEL = 'Bussines_central.Usuario'  # Reemplaza 'app_name' con el nombre de tu aplicación
+
+
+
+MEDIA_URL = '/media/'  
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

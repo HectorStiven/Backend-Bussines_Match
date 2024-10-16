@@ -141,3 +141,17 @@ class Interes(models.Model):
         verbose_name = 'Interés'
         verbose_name_plural = 'Intereses'
         db_table = 'T005Interes'
+
+
+
+
+
+class Documento(models.Model):
+    nombre = models.CharField(max_length=255)
+    archivo = models.FileField(upload_to='dumes/')  # Almacenará los archivos en /media/dumes/
+    subido_en = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Documento'
+        verbose_name_plural = 'Documentos'
+        db_table = 'T006Documento'
