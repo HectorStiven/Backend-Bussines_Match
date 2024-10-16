@@ -55,8 +55,8 @@ class DocumentoSerializer(serializers.ModelSerializer):
         model = Documento
         fields = '__all__'
     
-    def validate_archivo(self, value):
-        # Verifica si el archivo es un PDF
-        if not value.name.endswith('.pdf'):
-            raise serializers.ValidationError("Solo se permiten archivos PDF.")
-        return value
+    # def validate_archivo(self, value):
+    #     # Verifica si el archivo es un PDF
+    #     if not value.name.endswith('.pdf'):
+    #         raise serializers.ValidationError("Solo se permiten archivos PDF.")
+    #     return value
