@@ -148,8 +148,8 @@ class Interes(models.Model):
 
 class Documento(models.Model):
     nombre = models.CharField(max_length=255)
-    # archivo = models.FileField(upload_to='dumes/')  # Almacenará los archivos en /media/dumes/
-    # subido_en = models.DateTimeField(auto_now_add=True)
+    archivo = models.FileField(upload_to='dumes/')  # Almacenará los archivos en /media/dumes/
+    subido_en = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = 'Documento'
