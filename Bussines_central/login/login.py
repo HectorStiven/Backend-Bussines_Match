@@ -170,6 +170,7 @@ class LoginUsuario(generics.GenericAPIView):
                 'detail': 'Login exitoso.',
                 'access_token': str(access_token),  # Token de acceso
                 'refresh_token': str(refresh),  # Token de refresco
+                'data': UsuarioSerializer(usuario).data
             }, status=status.HTTP_200_OK)
         else:
             return Response({
