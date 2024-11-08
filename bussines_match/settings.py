@@ -63,8 +63,8 @@ REST_FRAMEWORK = {
 from datetime import timedelta
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta( minutes=2),  # El token expira en 60 minutos
-    'REFRESH_TOKEN_LIFETIME': timedelta(minutes=3),  # El token de refresco dura 1 día
+    'ACCESS_TOKEN_LIFETIME': timedelta( minutes=60),  # El token expira en 60 minutos
+    'REFRESH_TOKEN_LIFETIME': timedelta(minutes=60),  # El token de refresco dura 1 día
 
 }
 
