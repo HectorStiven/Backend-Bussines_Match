@@ -1,6 +1,6 @@
 from rest_framework import generics
 from .models import Documento, Usuario, Categoria, Subcategoria, Match, Interes    
-from .serializer import DocumentoSerializer, UsuarioSerializer, CategoriaSerializer, SubcategoriaSerializer, MatchSerializer, InteresSerializer
+from .serializer import DocumentoSerializer, MatchSerializerCrear, UsuarioSerializer, CategoriaSerializer, SubcategoriaSerializer, MatchSerializer, InteresSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.exceptions import NotFound,ValidationError,PermissionDenied
@@ -194,10 +194,10 @@ class ListarMatchPorUsuario(generics.ListAPIView):
     
 class CrearMatch(generics.CreateAPIView):
     queryset = Match.objects.all()
-    serializer_class = MatchSerializer
+    serializer_class = MatchSerializerCrear
 
     def post(self, request, *args, **kwargs):
-        serializer = MatchSerializer(data=request.data)
+        serializer = MatchSerializerCrear(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response({

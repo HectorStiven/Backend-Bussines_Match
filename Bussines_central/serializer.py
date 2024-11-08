@@ -47,6 +47,10 @@ class MatchSerializer(serializers.ModelSerializer):
     class Meta:
         model = Match
         fields = '__all__'
+class MatchSerializerCrear(serializers.ModelSerializer):
+       class Meta:
+        model = Match
+        fields = '__all__'
 
 class InteresSerializer(serializers.ModelSerializer):
     class Meta:
