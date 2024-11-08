@@ -4,7 +4,7 @@ from . import views as viwes
 from django.urls import path
 
 urlpatterns = [
-    path('listar_usuario/', login.ListarUsuario.as_view(), name='listar_usuario'),
+    path('listar_usuario/<int:pk>/', login.ListarUsuario.as_view(), name='listar_usuario'),
     path('crear_usuario/', login.CrearUsuario.as_view(), name='crear_usuario'),
     path('actualizar_usuario/<int:pk>/', login.ActualizarUsuario.as_view(), name='actualizar_usuario'),
     path('eliminar_usuario/<int:pk>/', login.EliminarUsuario.as_view(), name='eliminar_usuario'),
@@ -22,10 +22,11 @@ urlpatterns = [
     path('eliminar_subcategoria/<int:pk>/', viwes.EliminarSubcategoria.as_view(), name='eliminar_subcategoria'),
 
     path('listar_match/', viwes.ListarMatch.as_view(), name='listar_match'),
+    path('listar_match_usuario/<int:usuario_id>/', viwes.ListarMatchPorUsuario.as_view(), name='listar_matches_por_usuario'),
     path('crear_match/', viwes.CrearMatch.as_view(), name='crear_match'),
     path('actualizar_match/<int:pk>/', viwes.ActualizarMatch.as_view(), name='actualizar_match'),
     path('eliminar_match/<int:pk>/', viwes.EliminarMatch.as_view(), name='eliminar_match'),
-
+    path('actualizar_seguidores/<int:pk>/', viwes.ActualizarNumerosSugeridos.as_view(), name='actualizar_seguidores'),
 #hola
 
     path('subir_archivo/', viwes.SubirDocumentos.as_view(), name='subir_producto_pdf'),

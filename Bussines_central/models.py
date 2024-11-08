@@ -114,6 +114,7 @@ class Categoria(models.Model):
         verbose_name_plural = 'Categorías'
         db_table = 'T002Categoria'
 
+from django.contrib.postgres.fields import ArrayField
 
 class Match(models.Model):
     id = models.BigAutoField(primary_key=True)  # Identificador único del match
@@ -124,7 +125,8 @@ class Match(models.Model):
     etapa = models.CharField(max_length=50)  # Etapa del match
     asunto = models.CharField(max_length=255)  # Asunto del match
     descripcion = models.TextField(max_length=500)  # Descripción del match
-
+    numeros_sugeridos = ArrayField(models.IntegerField(), blank=True, default=list)  # Nuevo campo para almacenar un array de números
+    activo = models.BooleanField(default=True)  # Estado del match
     class Meta:
         verbose_name = 'Match'
         verbose_name_plural = 'Matches'

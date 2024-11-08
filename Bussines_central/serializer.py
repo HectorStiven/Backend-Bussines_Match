@@ -41,6 +41,9 @@ class SubcategoriaSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class MatchSerializer(serializers.ModelSerializer):
+    usuario = UsuarioSerializer()
+    usuario_2 = UsuarioSerializer()
+    categoria = CategoriaSerializer()
     class Meta:
         model = Match
         fields = '__all__'

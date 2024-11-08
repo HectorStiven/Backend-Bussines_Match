@@ -161,7 +161,37 @@ class ListarMatch(generics.ListAPIView):
             'detail': 'Lista de matches registrados',
             'data': serializer.data
         }, status=status.HTTP_200_OK)
+    
+class ListarMatchPorUsuario(generics.ListAPIView):
+    serializer_class = MatchSerializer
 
+    def get_queryset(self):
+        # Obtener el id de usuario desde los parámetros de la URL
+        usuario_id = self.kwargs['usuario_id']
+        
+        # Filtrar los registros de Match para el usuario dado
+        queryset = Match.objects.filter(usuario_id=usuario_id)
+        
+        # Si no se encuentran registros, devolvemos un queryset vacío
+        if not queryset.exists():
+            return Match.objects.none()  # No devuelve nada si no hay coincidencias
+        
+        return queryset
+
+    def get(self, request, *args, **kwargs):
+        # Llamamos a la lógica de `get_queryset` para obtener los matches filtrados
+        queryset = self.get_queryset()
+        # Serializamos los datos
+        serializer = self.get_serializer(queryset, many=True)
+        
+        # Retornamos la respuesta con los datos serializados
+        return Response({
+            'success': True,
+            'detail': 'Lista de matches encontrados para el usuario',
+            'data': serializer.data
+        }, status=status.HTTP_200_OK)
+    
+    
 class CrearMatch(generics.CreateAPIView):
     queryset = Match.objects.all()
     serializer_class = MatchSerializer
@@ -203,6 +233,46 @@ class ActualizarMatch(generics.UpdateAPIView):
                 'detail': 'Error al actualizar el match',
                 'data': serializer.errors
             }, status=status.HTTP_400_BAD_REQUEST)
+        
+
+class ActualizarNumerosSugeridos(generics.UpdateAPIView):
+    def put(self, request, pk, *args, **kwargs):
+        # Obtener el objeto Match según el ID
+        try:
+            match = Match.objects.get(pk=pk)
+        except Match.DoesNotExist:
+            return Response({
+                'success': False,
+                'detail': 'Match no encontrado'
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        # Obtener el número y el valor de 'activo' desde la solicitud
+        numero = request.data.get("numero")
+        activo = request.data.get("activo")
+        
+        if numero is None:
+            return Response({
+                'success': False,
+                'detail': 'Se requiere un número en la solicitud'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Agregar el número al arreglo de numeros_sugeridos
+        match.numeros_sugeridos.append(numero)
+
+        # Si 'activo' se ha proporcionado, actualizar el estado
+        if activo is not None:
+            match.activo = activo
+        
+        # Guardar el objeto después de las actualizaciones
+        match.save()
+        
+        # Serializar los datos y responder con éxito
+        serializer = MatchSerializer(match)
+        return Response({
+            'success': True,
+            'detail': 'Número y estado activo actualizados exitosamente',
+            'data': serializer.data
+        }, status=status.HTTP_200_OK)
     
 class EliminarMatch(generics.DestroyAPIView):
     queryset = Match.objects.all()

@@ -110,21 +110,30 @@ class EliminarUsuario(generics.DestroyAPIView):
 
 
 
-class ListarUsuario(generics.ListAPIView):
-    queryset = Usuario.objects.all()
+
+class ListarUsuario(generics.GenericAPIView):
     serializer_class = UsuarioSerializer
     permission_classes = [IsAuthenticated]  # Asegúrate de que se requiera autenticación
 
-    def get(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset())
-        serializer = self.get_serializer(queryset, many=True)
+    def get(self, request, pk, *args, **kwargs):
+        try:
+            # Obtener el objeto Usuario según el ID proporcionado en la URL
+            usuario = Usuario.objects.get(pk=pk)
+        except Usuario.DoesNotExist:
+            return Response({
+                'success': False,
+                'detail': 'Usuario no encontrado'
+            }, status=status.HTTP_404_NOT_FOUND)
+
+        # Serializar el usuario encontrado
+        serializer = self.get_serializer(usuario)
+
+        # Devolver la respuesta con el usuario encontrado
         return Response({
             'success': True,
-            'detail': 'Lista de personas registradas',
+            'detail': 'Usuario encontrado',
             'data': serializer.data
         }, status=status.HTTP_200_OK)
-
-
 
 class LoginUsuario(generics.GenericAPIView):
     serializer_class = UsuarioSerializer
