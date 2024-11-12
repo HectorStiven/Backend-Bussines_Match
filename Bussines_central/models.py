@@ -149,10 +149,10 @@ class Interes(models.Model):
 
 
 class Documento(models.Model):
-    nombre = models.CharField(max_length=255)
-    archivo = models.FileField(upload_to='dumes/')  # Almacenará los archivos en /media/dumes/
-    # foto= models.ImageField(upload_to='fotos/')  # Almacenará las fotos en /media/fotos/
-    subido_en = models.DateTimeField(auto_now_add=True)
+    nombre = models.CharField(max_length=255, blank=True, null=True)
+    archivo = models.FileField(upload_to='dumes/', blank=True, null=True)  # Almacenará los archivos en /media/dumes/
+    foto = models.ImageField(upload_to='fotos/', blank=True, null=True)    # Almacenará las fotos en /media/fotos/
+    subido_en = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     class Meta:
         verbose_name = 'Documento'
