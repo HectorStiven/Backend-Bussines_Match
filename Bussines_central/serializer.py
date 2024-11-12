@@ -23,17 +23,22 @@ class UsuarioSerializer(serializers.ModelSerializer):
             'ultima_conexion',
             'fecha_creacion',
             'activo',
-            'notificaciones'
+            'notificaciones',
+            'foto'
+            
         ]
         # Opcionalmente, podrías agregar 'extra_kwargs' para personalizar el comportamiento de ciertos campos
         extra_kwargs = {
             'contrasena': {'write_only': True}  # Evitar que la contraseña sea retornada en las respuestas
         }
 
+    
+
 class CategoriaSerializer(serializers.ModelSerializer):        
     class Meta:
         model = Categoria
         fields = '__all__'      
+
 
 class SubcategoriaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -47,6 +52,13 @@ class MatchSerializer(serializers.ModelSerializer):
     class Meta:
         model = Match
         fields = '__all__'
+
+class MatchSerializerSave(serializers.ModelSerializer):
+    class Meta:
+        model = Match
+        fields = ['usuario_2']
+
+
 class MatchSerializerCrear(serializers.ModelSerializer):
        class Meta:
         model = Match

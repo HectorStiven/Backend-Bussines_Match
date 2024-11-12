@@ -62,6 +62,7 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     activo = models.BooleanField(default=True)
     notificaciones = models.BooleanField(default=True)
+    foto = models.ImageField(upload_to='fotos/', blank=True, null=True)    # Almacenará las fotos en /media/fotos/
 
     # Avoid field clash by specifying related_name
     # groups = models.ManyToManyField(

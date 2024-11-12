@@ -1,6 +1,6 @@
 from rest_framework import generics
 from .models import Documento, Usuario, Categoria, Subcategoria, Match, Interes    
-from .serializer import DocumentoSerializer, MatchSerializerCrear, UsuarioSerializer, CategoriaSerializer, SubcategoriaSerializer, MatchSerializer, InteresSerializer
+from .serializer import DocumentoSerializer, MatchSerializerCrear, UsuarioSerializer, CategoriaSerializer, SubcategoriaSerializer, MatchSerializer, InteresSerializer,MatchSerializerSave
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.exceptions import NotFound,ValidationError,PermissionDenied
@@ -215,13 +215,15 @@ class CrearMatch(generics.CreateAPIView):
 
 class ActualizarMatch(generics.UpdateAPIView):
     queryset = Match.objects.all()
-    serializer_class = MatchSerializer
+    serializer_class = MatchSerializerSave
 
-    def put(self, request, *args, **kwargs):
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
         instance = self.get_object()
-        serializer = MatchSerializer(instance, data=request.data)
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        
         if serializer.is_valid():
-            serializer.save()
+            self.perform_update(serializer)
             return Response({
                 'success': True,
                 'detail': 'Match actualizado exitosamente',
@@ -233,7 +235,6 @@ class ActualizarMatch(generics.UpdateAPIView):
                 'detail': 'Error al actualizar el match',
                 'data': serializer.errors
             }, status=status.HTTP_400_BAD_REQUEST)
-        
 
 class ActualizarNumerosSugeridos(generics.UpdateAPIView):
     def put(self, request, pk, *args, **kwargs):
