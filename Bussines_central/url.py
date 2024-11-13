@@ -31,4 +31,9 @@ urlpatterns = [
 
     path('subir_archivo/', viwes.SubirDocumentos.as_view(), name='subir_producto_pdf'),
     path('listar_archivo/', viwes.ListarDocumentos.as_view(), name='listar_producto'),
+
+
+    path('enviar_correo/', viwes.EnviarCorreoElectronico.as_view(), name='enviar_correo'),
+
+    
 ]
